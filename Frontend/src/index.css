@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  /* Define your Amazon brand colors here */
+  --color-amazon_blue-light: #232f3e;
+  --color-amazon_blue: #131921;
+  --color-amazon_yellow: #febd69;
+  
+  /* You can also add custom spacing or screens if needed */
+}
+
+@layer components {
+  .amazon-button {
+    /* Use the variable defined above */
+    @apply bg-amazon_yellow hover:bg-[#f0c14b] text-black py-2 px-4 rounded-md 
+           transition duration-200 border border-[#a88734] active:ring-2 
+           active:ring-yellow-300 shadow-sm text-sm;
+  }
+}
