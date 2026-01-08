@@ -25,7 +25,7 @@ const placeOrderHandler = async () => {
     };
 
     const { data } = await axios.post(
-      '/api/orders',
+      `${import.meta.env.VITE_API_URL}/api/orders`,
       orderData,
       {
         headers: {

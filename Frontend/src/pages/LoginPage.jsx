@@ -16,7 +16,7 @@ const LoginPage = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/api/users/login', { email, password });
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/users/login`, { email, password });
       setUserInfo(data);
     } catch (err) {
       alert(err.response?.data?.message || "Invalid Login");

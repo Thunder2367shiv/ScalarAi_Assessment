@@ -10,10 +10,11 @@ import { notFound, errorHandler } from './middlewares/errorMiddleware.js';
 const app = express();
 
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173', 
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+  origin: true,       
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  credentials: true,  
 }));
+
 app.use(express.json());
 
 app.use('/api/users', userRoutes);

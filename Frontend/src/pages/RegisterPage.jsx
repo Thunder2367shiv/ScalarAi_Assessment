@@ -23,7 +23,7 @@ const RegisterPage = () => {
     }
 
     try {
-      const { data } = await axios.post('/api/users/register', { name, email, password });
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/users/register`, { name, email, password });
       setUserInfo(data);
       alert("Registration Successful!");
     } catch (err) {

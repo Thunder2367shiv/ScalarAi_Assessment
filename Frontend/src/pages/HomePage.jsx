@@ -17,7 +17,7 @@ const HomePage = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get(`/api/products?keyword=${keyword}&category=${category}`);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/products?keyword=${keyword}&category=${category}`);
         setProducts(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Fetch error:", error);

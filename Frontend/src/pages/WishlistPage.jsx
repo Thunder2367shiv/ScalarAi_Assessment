@@ -13,7 +13,7 @@ const WishlistPage = () => {
       try {
         setLoading(true);
         
-        const { data } = await axios.get('/api/products');
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`);
         const filtered = data.filter(p => wishlist?.includes(p._id));
         setItems(filtered);
       } catch (err) {

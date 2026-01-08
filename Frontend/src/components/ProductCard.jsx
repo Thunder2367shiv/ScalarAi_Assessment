@@ -37,7 +37,7 @@ const toggleWishlist = async (e) => {
 
     console.log("Config", config);
 
-    const { data } = await axios.post('/api/wishlist', { productId: product._id }, config);
+    const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/wishlist`, { productId: product._id }, config);
     setWishlist(data); 
     
   } catch (err) {

@@ -14,7 +14,7 @@ const OrdersPage = () => {
       try {
         setLoading(true);
         const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-        const { data } = await axios.get('/api/orders/myorders', config);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/orders/myorders`, config);
         setOrders(data);
       } catch (error) {
         console.error("Error fetching orders", error);
