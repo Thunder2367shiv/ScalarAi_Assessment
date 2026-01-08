@@ -1,13 +1,16 @@
 import dotenv from "dotenv";
-import connectDB from "./src/config/db.js";
+import { connectDB } from "./src/config/db.js";
 import app from "./src/app.js";
 
 dotenv.config();
 
-// Connect to Database immediately
-connectDB();
+// In Sequelize, connectDB() is async. 
+// We call it but don't strictly need to await it here for Vercel,
+// as the first request will trigger the connection in the background.
+connectDB().catch(err => {
+    console.error("Initial DB Connection Failed:", err);
+});
 
-// This is for local development only
 if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
@@ -15,5 +18,4 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-// CRITICAL: Vercel needs the app exported to work as a serverless function
 export default app;

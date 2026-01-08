@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import Product from '../models/Product.js';
-import connectDB from '../config/db.js';
+import {connectDB} from '../config/db.js';
 
 dotenv.config();
-connectDB();
 
 const products = [
   {
@@ -274,9 +273,18 @@ const products = [
 
 const importData = async () => {
   try {
-    await Product.deleteMany();
-    await Product.insertMany(products);
-    console.log(`${products.length} Products Imported Successfully!`);
+    // 1. Connect to MySQL
+    await connectDB();
+
+    // 2. Clear existing products
+    // truncate: true is the SQL equivalent of deleteMany()
+    await Product.destroy({ truncate: true, cascade: false });
+
+    // 3. Insert new products
+    // bulkCreate is the Sequelize equivalent of insertMany()
+    await Product.bulkCreate(products);
+
+    console.log(`${products.length} Products Imported Successfully into MySQL!`);
     process.exit();
   } catch (error) {
     console.error(`Error: ${error.message}`);

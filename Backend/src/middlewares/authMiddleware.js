@@ -10,13 +10,19 @@ export const protect = async (req, res, next) => {
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      const user = await User.findById(decoded.id).select('-password');
+      // In Sequelize, findByPk is used for Primary Key lookup
+      // 'attributes' with 'exclude' is the equivalent of .select('-password')
+      const user = await User.findByPk(decoded.id, {
+        attributes: { exclude: ['password'] }
+      });
 
       if (!user) {
         return res.status(401).json({ message: 'User no longer exists' });
       }
 
-      req.user = user;
+      // Convert the Sequelize instance to a plain object so it's easier to use later
+      req.user = user.get({ plain: true });
+      
       return next();
     } catch (error) {
       console.error('JWT Error:', error.message);

@@ -3,36 +3,27 @@ import User from '../models/User.js';
 export const toggleWishlist = async (req, res) => {
   try {
     const { productId } = req.body;
+    const user = await User.findByPk(req.user.id);
 
-    if (!req.user) {
-      return res.status(401).json({ message: 'Not authorized' });
-    }
+    if (!user) return res.status(404).json({ message: 'User not found' });
 
-    const user = await User.findById(req.user._id);
+    // Parse current wishlist string into array
+    let wishlistArray = JSON.parse(user.wishlist || '[]');
 
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    if (!user.wishlist) {
-      user.wishlist = [];
-    }
-
-    const index = user.wishlist.findIndex(
-      (id) => id.toString() === productId
-    );
+    const index = wishlistArray.findIndex((id) => id.toString() === productId.toString());
 
     if (index !== -1) {
-      user.wishlist.splice(index, 1); 
+      wishlistArray.splice(index, 1); 
     } else {
-      user.wishlist.push(productId); 
+      wishlistArray.push(productId); 
     }
 
+    // Save back as string
+    user.wishlist = JSON.stringify(wishlistArray);
     await user.save();
 
-    res.status(200).json(user.wishlist);
+    res.status(200).json(wishlistArray);
   } catch (error) {
-    console.error('WISHLIST ERROR:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
