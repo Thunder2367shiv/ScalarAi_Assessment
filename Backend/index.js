@@ -4,9 +4,6 @@ import app from "./src/app.js";
 
 dotenv.config();
 
-// In Sequelize, connectDB() is async. 
-// We call it but don't strictly need to await it here for Vercel,
-// as the first request will trigger the connection in the background.
 connectDB().catch(err => {
     console.error("Initial DB Connection Failed:", err);
 });

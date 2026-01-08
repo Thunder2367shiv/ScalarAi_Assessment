@@ -3,7 +3,6 @@ import Cart from '../models/Cart.js';
 export const getCart = async (req, res) => {
   const cart = await Cart.findOne({ where: { user: "guest-session-123" } });
   if (cart) {
-    // Convert text back to JSON array for frontend
     res.json({ ...cart.toJSON(), cartItems: JSON.parse(cart.cartItems) });
   } else {
     res.json({ cartItems: [] });

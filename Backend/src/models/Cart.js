@@ -12,7 +12,6 @@ const Cart = sequelize.define('Cart', {
     defaultValue: "guest-session-123",
     unique: true,
   },
-  // Use TEXT instead of JSON
   cartItems: {
     type: DataTypes.TEXT,
     allowNull: false,

@@ -273,15 +273,9 @@ const products = [
 
 const importData = async () => {
   try {
-    // 1. Connect to MySQL
     await connectDB();
 
-    // 2. Clear existing products
-    // truncate: true is the SQL equivalent of deleteMany()
     await Product.destroy({ truncate: true, cascade: false });
-
-    // 3. Insert new products
-    // bulkCreate is the Sequelize equivalent of insertMany()
     await Product.bulkCreate(products);
 
     console.log(`${products.length} Products Imported Successfully into MySQL!`);

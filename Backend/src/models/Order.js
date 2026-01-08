@@ -11,7 +11,6 @@ const Order = sequelize.define('Order', {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  // Use TEXT for compatibility with older MySQL versions
   orderItems: {
     type: DataTypes.TEXT, 
     allowNull: false,

@@ -7,7 +7,6 @@ export const toggleWishlist = async (req, res) => {
 
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    // Parse current wishlist string into array
     let wishlistArray = JSON.parse(user.wishlist || '[]');
 
     const index = wishlistArray.findIndex((id) => id.toString() === productId.toString());
@@ -18,7 +17,6 @@ export const toggleWishlist = async (req, res) => {
       wishlistArray.push(productId); 
     }
 
-    // Save back as string
     user.wishlist = JSON.stringify(wishlistArray);
     await user.save();
 
