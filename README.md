@@ -29,16 +29,17 @@ A full-featured e-commerce platform replicating the core experience of Amazon. T
 ## 🛠️ Tech Stack
 - Frontend: Built with React.js for a dynamic user interface, styled using Tailwind CSS, and utilizing React Router Dom for navigation.
 - Backend: Developed using Node.js as the runtime and Express.js as the web framework to handle server-side logic and API routes.
-- Database: Powered by MongoDB (Atlas), a document-oriented database used for storing product data, user profiles, and order information.
+- Database: Powered by MySQL, a relational database managed through the Sequelize ORM to ensure data integrity, structured schemas, and efficient relationship mapping.
 - Deployment: Hosted on Vercel, leveraging Serverless Functions to run the backend API efficiently.
 
 ---
 
 ## 🚀 Optimization & Performance
 - Modular Architecture: Components like ProductCard are decoupled to ensure the same logic is used across the Home and Wishlist pages.
-- Serverless Optimization: The backend is configured as a serverless function on Vercel, ensuring it scales automatically with traffic.
-- CORS Configuration: Fine-tuned Cross-Origin Resource Sharing to allow secure communication between the separate frontend and backend domains.
-- Search Optimization: Utilized MongoDB indexing on product names to ensure search queries remain fast as the database grows.
+- Relational Data Management: Utilized Sequelize ORM to handle complex data types (like storing cart items and addresses as TEXT/JSON) while maintaining strict relational constraints.
+- Search Optimization: Implemented SQL LIKE Operators with indexed columns to ensure fast product lookups across large datasets.
+- Frontend Debouncing: Integrated a custom debouncing mechanism in the search bar to reduce API overhead and prevent database connection bottlenecks during user input.
+- Transaction Safety: (If implemented) Leveraged SQL transactions to ensure that order creation and inventory stock decrements happen atomically—preventing data inconsistency.
 
 --- 
 
