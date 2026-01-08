@@ -1,4 +1,5 @@
 import { Sequelize } from 'sequelize';
+import mysql2 from 'mysql2'; // 1. Add this import
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -10,19 +11,19 @@ const sequelize = new Sequelize(
   {
     host: process.env.DB_HOST,
     dialect: 'mysql',
-    logging: false, // Set to console.log to see SQL queries
+    dialectModule: mysql2, // 2. Add this line
+    port: 3306,
+    logging: false,
   }
 );
 
 export const connectDB = async () => {
   try {
     await sequelize.authenticate();
-    // sync({ alter: true }) updates your tables to match your models
-    await sequelize.sync({ alter: true }); 
-    console.log('MySQL Connected successfully with Sequelize');
+    await sequelize.sync({ alter: true });
+    console.log('MySQL Connected with Sequelize (Vercel Fix applied)');
   } catch (error) {
     console.error('Sequelize Connection Error:', error);
-    process.exit(1);
   }
 };
 
