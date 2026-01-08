@@ -1,52 +1,57 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { Search, ShoppingCart, Menu, LogOut, User } from 'lucide-react';
+import { Search, ShoppingCart, LogOut } from 'lucide-react';
 
 const Header = () => {
   const [keyword, setKeyword] = useState('');
   const [category, setCategory] = useState('All');
   
-  // Destructure global state from Context
   const { cartItems, userInfo, logout } = useCart();
-  
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Sync state with URL parameters to keep UI in sync with the search
+  // 1. Sync local state with URL when page loads or location changes
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    setKeyword(params.get('keyword') || '');
-    setCategory(params.get('category') || 'All');
+    const urlKeyword = params.get('keyword') || '';
+    const urlCategory = params.get('category') || 'All';
+    
+    setKeyword(urlKeyword);
+    setCategory(urlCategory);
   }, [location.search]);
 
+  // 2. DEBOUNCE LOGIC: Watch the 'keyword' state and navigate after 500ms delay
+  useEffect(() => {
+    // Only trigger debounce if we are currently on the search/home page
+    // and if the current keyword in URL is different from the state
+    const params = new URLSearchParams(location.search);
+    const currentUrlKeyword = params.get('keyword') || '';
+
+    if (keyword !== currentUrlKeyword) {
+      const delayDebounceFn = setTimeout(() => {
+        // We preserve the current category while searching
+        navigate(`/?keyword=${keyword}&category=${category}`);
+      }, 500); // 500ms wait time
+
+      return () => clearTimeout(delayDebounceFn);
+    }
+  }, [keyword, navigate, category, location.search]);
+
   const categories = [
-  'All',
-  'Electronics',
-  'Gaming',
-  'Fashion',
-  'Books',
-  'Sports',
-  'Fitness',
-  'Beauty',
-  'Furniture',
-  'Office',
-  'Toys',
-  'Grocery',
-  'Automotive',
-];
+    'All', 'Electronics', 'Gaming', 'Fashion', 'Books', 'Sports', 
+    'Fitness', 'Beauty', 'Furniture', 'Office', 'Toys', 'Grocery', 'Automotive',
+  ];
 
-
+  // Manual search (on Enter or Button Click)
   const handleSearch = (e) => {
     e.preventDefault();
-    // Search resets category to All for broad results
-    navigate(`/?keyword=${keyword}&category=All`);
+    navigate(`/?keyword=${keyword}&category=${category}`);
   };
 
   const handleCategoryChange = (e) => {
     const selectedCat = e.target.value;
     setCategory(selectedCat);
-    // Keep search term but filter by new category
     navigate(`/?keyword=${keyword}&category=${selectedCat}`);
   };
 
@@ -54,7 +59,6 @@ const Header = () => {
 
   return (
     <header className="bg-amazon_blue text-white sticky top-0 z-50 shadow-md">
-      {/* Top Navigation Row */}
       <div className="max-w-7xl mx-auto flex items-center p-2 gap-4">
         
         {/* Logo */}
@@ -74,7 +78,7 @@ const Header = () => {
           <input 
             type="text" 
             value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
+            onChange={(e) => setKeyword(e.target.value)} // Instant UI update
             className="flex-grow p-2 text-black outline-none text-sm px-4" 
             placeholder="Search products..." 
           />
@@ -85,18 +89,15 @@ const Header = () => {
 
         {/* Right Side Links */}
         <div className="flex items-center gap-2">
-          
-          {/* Safe Dynamic Account Section */}
+          {/* Account Section */}
           <div className="group relative border border-transparent hover:border-white px-2 py-1 cursor-pointer transition-all">
             <p className="text-[10px] leading-tight text-gray-300">
-              {/* Optional chaining fixes the 'split' error */}
               Hello, {userInfo?.name ? userInfo.name.split(' ')[0] : 'Guest'}
             </p>
             <p className="text-sm font-bold leading-tight flex items-center">
               Account & Lists
             </p>
 
-            {/* Hover Dropdown Menu */}
             <div className="absolute hidden group-hover:block top-full right-0 bg-white text-black min-w-[180px] shadow-2xl border rounded-sm py-3 z-50">
               {!userInfo ? (
                 <div className="px-4 py-2 text-center">
@@ -120,17 +121,15 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Orders Link */}
           <Link to="/orders" className="hidden md:block border border-transparent hover:border-white px-2 py-1 cursor-pointer duration-150">
             <p className="text-[10px] leading-tight text-gray-300">Returns</p>
             <p className="text-sm font-bold leading-tight">& Orders</p>
           </Link>
 
-          {/* Cart Icon */}
           <Link to="/cart" className="relative flex items-center border border-transparent hover:border-white px-2 py-2 duration-150">
             <div className="relative">
               <ShoppingCart size={32} />
-              <span className="absolute -top-1 left-1/2 -translate-x-1/2 bg-amazon_blue text-amazon_yellow rounded-full text-xs font-bold px-1 min-w-[18px] text-center">
+              <span className="absolute -top-1 left-1/2 -translate-x-1/2 bg-amazon_blue text-amazon_yellow rounded-full text-xs font-bold px-1 min-w-[180px] text-center">
                 {cartCount}
               </span>
             </div>
@@ -138,8 +137,6 @@ const Header = () => {
           </Link>
         </div>
       </div>
-      
-      
     </header>
   );
 };
