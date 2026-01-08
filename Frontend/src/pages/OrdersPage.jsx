@@ -55,7 +55,7 @@ const OrdersPage = () => {
                   </div>
                   <div>
                     <p className="text-[10px] uppercase font-bold text-gray-500">Total</p>
-                    <p className="font-medium">${order.totalPrice.toFixed(2)}</p>
+                    <p className="font-medium">${Number(order.totalPrice).toFixed(2)}</p>
                   </div>
                   <div className="hidden sm:block">
                     <p className="text-[10px] uppercase font-bold text-gray-500">Ship To</p>
