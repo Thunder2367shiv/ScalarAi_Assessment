@@ -14,7 +14,7 @@ const WishlistPage = () => {
         setLoading(true);
         
         const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`);
-        const filtered = data.filter(p => wishlist?.includes(p._id));
+        const filtered = data.filter(p => wishlist?.includes(p.id));
         setItems(filtered);
       } catch (err) {
         console.error("Error fetching wishlist details", err);
@@ -36,7 +36,7 @@ const WishlistPage = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {items.map(item => (
-            <ProductCard key={item._id} product={item} />
+            <ProductCard key={item.id} product={item} />
           ))}
         </div>
       )}

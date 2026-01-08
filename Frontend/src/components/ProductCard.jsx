@@ -8,7 +8,7 @@ const ProductCard = ({ product }) => {
   const navigate = useNavigate();
 
   // Check if item is already in wishlist
-  const isWishlisted = wishlist?.some((id) => id === product._id);
+  const isWishlisted = wishlist?.some((id) => id === product.id);
 
   const handleAddToCart = () => {
     if (!userInfo) {
@@ -37,7 +37,7 @@ const toggleWishlist = async (e) => {
 
     console.log("Config", config);
 
-    const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/wishlist`, { productId: product._id }, config);
+    const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/wishlist`, { productId: product.id }, config);
     setWishlist(data); 
     
   } catch (err) {
@@ -54,7 +54,7 @@ const toggleWishlist = async (e) => {
   return (
     <div className="bg-white p-4 border border-gray-200 rounded-sm flex flex-col hover:shadow-md transition-shadow h-full">
       
-      <Link to={`/product/${product._id}`} className="flex-grow">
+      <Link to={`/product/${product.id}`} className="flex-grow">
         <div className="h-48 w-full flex items-center justify-center mb-3">
           <img 
             src={product.image} 

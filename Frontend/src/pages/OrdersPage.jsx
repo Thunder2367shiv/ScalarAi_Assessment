@@ -44,7 +44,7 @@ const OrdersPage = () => {
       ) : (
         <div className="space-y-6">
           {orders.map((order) => (
-            <div key={order._id} className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <div key={order.id} className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
               
               {/* Order Header */}
               <div className="bg-gray-100 p-4 border-b border-gray-200 flex flex-wrap justify-between gap-4 text-sm text-gray-700">
@@ -63,7 +63,7 @@ const OrdersPage = () => {
                   </div>
                 </div>
                 <div className="text-right ml-auto">
-                  <p className="text-[10px] uppercase font-bold text-gray-500">Order # {order._id}</p>
+                  <p className="text-[10px] uppercase font-bold text-gray-500">Order # {order.id}</p>
                   
                 </div>
               </div>

@@ -18,7 +18,7 @@ const placeOrderHandler = async () => {
         qty: item.qty,
         image: item.image,
         price: item.price,
-        product: item._id, 
+        product: item.id, 
       })),
       shippingAddress: address,
       totalPrice,
@@ -35,7 +35,7 @@ const placeOrderHandler = async () => {
     );
 
     setCartItems([]);
-    navigate(`/order-success/${data._id}`);
+    navigate(`/order-success/${data.id}`);
   } catch (err) {
     console.error(err);
     alert(err.response?.data?.message || 'Error placing order');
